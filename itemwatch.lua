@@ -370,10 +370,10 @@ ashita.register_event('command', function(cmd, ntype)
     end
 
     if (#args == 2 and args[1] == '/dw' and args[2] == 'items') then
-        print('Items Report ' .. os.date("%m/%d/%Y %H:%M:%S"))
+        print('\30\05Items Report ' .. os.date("%m/%d/%Y %H:%M:%S"))
         if (itemwatch_session_items['item_grid_data']) then
             for _, v in ipairs(itemwatch_session_items['item_grid_data']) do
-                print(string.format('\30\02%s: %s/%s %s%%', v[1], v[2], v[3], v[4]))
+                print(string.format('\30\02%s : %s/%s %s%%', v[1], v[2], v[3], v[4]))
             end
         end
         return true;
@@ -389,7 +389,7 @@ ashita.register_event('command', function(cmd, ntype)
             for k, drops in pairs(itemwatch_session_items['mob_grid_data']) do
                 print('\30\03' .. itemwatch_session_items['mob_grid_data'][k]['mob'])
                 for i, drop in ipairs(drops) do
-                    print(string.format(' >\30\02 %s: %s/%s %s%%', drop['item'], drop['item count'], drop['mob kills'],
+                    print(string.format(' >\30\02 %s : %s/%s %s%%', drop['item'], drop['item count'], drop['mob kills'],
                     drop['drop rate']))
                 end
             end
@@ -398,7 +398,7 @@ ashita.register_event('command', function(cmd, ntype)
     end
 
     if (#args == 2 and args[1] == '/dw' and args[2] == 'log') then
-        print('Log Report ' .. os.date("%m/%d/%Y %H:%M:%S"))
+        print('\30\05Log Report ' .. os.date("%m/%d/%Y %H:%M:%S"))
         if (itemwatch_session_items['log_grid_data']) then
             for _, v in ipairs(itemwatch_session_items['log_grid_data']) do
                 print('\30\02' .. v[1] .. ' : ' .. v[2] .. ' ' .. v[3] .. ' ' .. v[4]);
