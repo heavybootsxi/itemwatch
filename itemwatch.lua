@@ -363,7 +363,7 @@ ashita.register_event('command', function(cmd, ntype)
     -- Dropwatch Related Commands
     ------------------------------------------------------------------------------------------------
     if (#args == 2 and args[1] == '/dw' and args[2] == 'clear') then
-        itemwatch_session_items = {}
+        itemwatch_session_items          = {}
         itemwatch_session_items['drops'] = {}
         itemwatch_session_items['mobs']  = {}
         return true;
@@ -379,7 +379,7 @@ ashita.register_event('command', function(cmd, ntype)
         return true;
     end
 
-    if (#args == 2 and args[1] == '/dw' and args[2] == 'mobs') then         
+    if (#args == 2 and args[1] == '/dw' and args[2] == 'mobs') then
         -- local string = string.format('Mobs Report %s',tostring(os.date("%m/%d/%Y %H:%M:%S")))
         -- ashita.timer.once(1, function()
         --     AshitaCore:GetChatManager():QueueCommand('/echo '.. string, 2);
@@ -390,7 +390,7 @@ ashita.register_event('command', function(cmd, ntype)
                 print('\30\03' .. itemwatch_session_items['mob_grid_data'][k]['mob'])
                 for i, drop in ipairs(drops) do
                     print(string.format(' >\30\02 %s : %s/%s %s%%', drop['item'], drop['item count'], drop['mob kills'],
-                    drop['drop rate']))
+                        drop['drop rate']))
                 end
             end
         end
@@ -508,8 +508,8 @@ ashita.register_event('render', function()
             })
         end
 
-         table.sort(itemwatch_session_items['item_grid_data'], function (k1,k2)
-             return k1[1] < k2[1]    
+        table.sort(itemwatch_session_items['item_grid_data'], function(k1, k2)
+            return k1[1] < k2[1]
         end)
         ------------------------------------------------------------------------------------------------
         -- Mobs Log
@@ -797,7 +797,6 @@ ashita.register_event('incoming_text', function(mode, message, modifiedmode, mod
                 });
                 itemwatch_chest_drop_delay = os.time() + 20
             end
-            
         elseif mode == 36 or mode == 37 or mode == 44 or mode == 121 or string.contains(zone:lower(), 'dynamis') then
             if (kill_mob or fallen_mob) then
                 table.insert(itemwatch_session_items['mobs'], {
@@ -1295,9 +1294,9 @@ function render_session_items_editor()
     --imgui.SameLine();
     if (imgui.Button('Clear Data')) then
         --if (imgui.IsMouseDoubleClicked(0)) then
-            itemwatch_session_items = {};
-            itemwatch_session_items['drops'] = {}
-            itemwatch_session_items['mobs']  = {}
+        itemwatch_session_items          = {};
+        itemwatch_session_items['drops'] = {}
+        itemwatch_session_items['mobs']  = {}
         --end
     end
 
@@ -1308,11 +1307,11 @@ function render_session_items_editor()
 
     imgui.SameLine();
     if (imgui.Button('Import')) then
-          -- Get a list of files in the current directory
+        -- Get a list of files in the current directory
         itemwatch_export_files = {}
-          for file in io.popen('dir ' .. _addon.path .. '/exports /b'):lines() do
-              table.insert(itemwatch_export_files, file)
-          end
+        for file in io.popen('dir ' .. _addon.path .. '/exports /b'):lines() do
+            table.insert(itemwatch_export_files, file)
+        end
 
         imgui.SetVarValue(variables['var_ShowImportWindow'][1],
             not imgui.GetVarValue(variables['var_ShowImportWindow'][1]));
@@ -1330,11 +1329,16 @@ function render_session_items_editor()
         -- Create the file dialog
         imgui.SetNextWindowSize(200, 200, 'ImGuiCond_FirstUseEver')
         if imgui.BeginPopup('Select File', true) then
+            if (imgui.Button('Cancel')) then
+                imgui.SetVarValue(variables['var_ShowImportWindow'][1],
+                    not imgui.GetVarValue(variables['var_ShowImportWindow'][1]));
+                imgui.CloseCurrentPopup()
+            end
             -- Display the list of files in a selectable list
             imgui.BeginChild('Files', 0, 0, true)
             for i, file in ipairs(itemwatch_export_files) do
                 if imgui.Selectable(file) then
-                    file_path = _addon.path .. '/exports/' ..file
+                    file_path = _addon.path .. '/exports/' .. file
                     imgui.SetVarValue(variables['var_ShowImportWindow'][1],
                         not imgui.GetVarValue(variables['var_ShowImportWindow'][1]));
                     imgui.CloseCurrentPopup()
