@@ -63,6 +63,8 @@ itemwatch_session_items['mobs']  = {}
 local itemwatch_settings_pane    = 3;
 local itemwatch_settings_items   = {};
 local itemwatch_settings_keys    = {};
+local itemwatch_export_files     = {};
+local itemwatch_chest_drop_delay = os.time()
 
 ----------------------------------------------------------------------------------------------------
 -- UI Variables
@@ -71,6 +73,7 @@ local variables                  =
 {
     -- Editor Window Variables
     ['var_ShowEditorWindow']     = { nil, ImGuiVar_BOOLCPP, false },
+    ['var_ShowImportWindow']     = { nil, ImGuiVar_BOOLCPP, false },
     -- Item Editor Variables
     ['var_SelectedItem']         = { nil, ImGuiVar_INT32, -1 },
     ['var_FoundSelectedItem']    = { nil, ImGuiVar_INT32, -1 },
@@ -100,9 +103,9 @@ local variables                  =
 -- desc: Loads the ItemWatch settings file.
 ----------------------------------------------------------------------------------------------------
 local function load_settings()
-    ashita.file.create_dir(_addon.path .. '/settings/');
+    ashita.file.create_dir(_addon.path .. '/settings/lists');
     ashita.file.create_dir(_addon.path .. '/exports/');
-    
+
     -- Load the settings file..
     itemwatch_config = ashita.settings.load_merged(_addon.path .. 'settings/itemwatch.json', itemwatch_config);
 
@@ -133,7 +136,7 @@ local function load_settings()
     imgui.SetVarValue(variables['var_KeyItemColor1'][1], r / 255, g / 255, b / 255, a / 255);
     local a, r, g, b = color_to_argb(itemwatch_config.kicolor2);
     imgui.SetVarValue(variables['var_KeyItemColor2'][1], r / 255, g / 255, b / 255, a / 255);
-    imgui.SetVarValue(variables['var_UseCompactMode'][1], itemwatch_config.compact_mode);      
+    imgui.SetVarValue(variables['var_UseCompactMode'][1], itemwatch_config.compact_mode);
 end
 
 ----------------------------------------------------------------------------------------------------
@@ -195,51 +198,7 @@ local function export_session_data()
 end
 
 local function import_session_data()
-    -- Define the file path variable
-    local file_path = ''
 
-    -- Define a table to store the file contents
-    local file_data = {}
-
-        -- Open the file dialog when the button is clicked
-        if imgui.Button('Open File') then
-            imgui.OpenPopup('Select File')
-        end
-
-        -- Create the file dialog
-        imgui.SetNextWindowSize(400, 400, 'ImGuiCond_FirstUseEver')
-        if imgui.BeginPopupModal('Select File', true) then
-            -- Get a list of files in the current directory
-            local files = {}
-            for file in io.popen('dir ' .. _addon.path .. '/exports'):lines() do
-                table.insert(files, file)
-            end
-
-            -- Display the list of files in a selectable list
-            imgui.BeginChild('Files', 0, 0, true)
-            for i, file in ipairs(files) do
-                if imgui.Selectable(file) then
-                    file_path = file
-                end
-            end
-            imgui.EndChild()
-
-            -- If a file has been selected, read the file data and close the dialog
-            if file_path ~= '' then
-                local f = io.open(file_path, 'r')
-                file_data = {}
-                for line in f:lines() do
-                    table.insert(file_data, line)
-                end
-                f:close()
-                imgui.CloseCurrentPopup()
-            end
-
-            imgui.EndPopup()
-        end
-    
-    -- Load and merge the itemwatch_session_items data..
-    itemwatch_session_items = ashita.settings.load_merged(file_path, itemwatch_session_items);
 end
 
 ----------------------------------------------------------------------------------------------------
@@ -405,6 +364,8 @@ ashita.register_event('command', function(cmd, ntype)
     ------------------------------------------------------------------------------------------------
     if (#args == 2 and args[1] == '/dw' and args[2] == 'clear') then
         itemwatch_session_items = {}
+        itemwatch_session_items['drops'] = {}
+        itemwatch_session_items['mobs']  = {}
         return true;
     end
 
@@ -418,14 +379,18 @@ ashita.register_event('command', function(cmd, ntype)
         return true;
     end
 
-    if (#args == 2 and args[1] == '/dw' and args[2] == 'mobs') then
-        print('Mobs Report ' .. os.date("%m/%d/%Y %H:%M:%S"))
+    if (#args == 2 and args[1] == '/dw' and args[2] == 'mobs') then         
+        -- local string = string.format('Mobs Report %s',tostring(os.date("%m/%d/%Y %H:%M:%S")))
+        -- ashita.timer.once(1, function()
+        --     AshitaCore:GetChatManager():QueueCommand('/echo '.. string, 2);
+        -- end);
+        print('\30\05Mobs Report ' .. os.date("%m/%d/%Y %H:%M:%S"))
         if (itemwatch_session_items['mob_grid_data']) then
             for k, drops in pairs(itemwatch_session_items['mob_grid_data']) do
                 print('\30\03' .. itemwatch_session_items['mob_grid_data'][k]['mob'])
-                for _, drop in ipairs(drops) do
+                for i, drop in ipairs(drops) do
                     print(string.format(' >\30\02 %s: %s/%s %s%%', drop['item'], drop['item count'], drop['mob kills'],
-                        drop['drop rate']))
+                    drop['drop rate']))
                 end
             end
         end
@@ -446,7 +411,7 @@ ashita.register_event('command', function(cmd, ntype)
         export_session_data();
         return true;
     end
-        
+
     if (#args == 2 and args[1] == '/dw' and args[2] == 'import') then
         --import_session_data();
         return true;
@@ -543,6 +508,9 @@ ashita.register_event('render', function()
             })
         end
 
+         table.sort(itemwatch_session_items['item_grid_data'], function (k1,k2)
+             return k1[1] < k2[1]    
+        end)
         ------------------------------------------------------------------------------------------------
         -- Mobs Log
         ------------------------------------------------------------------------------------------------
@@ -739,7 +707,7 @@ ashita.register_event('incoming_packet', function(id, size, packet)
 
         if (action_message.message == 565) then
             -- gil message
-            local success, result = pcall(function() return GetEntity(action_message.actor).Name end)
+            local success, result = pcall(function() return GetEntity(action_message.actor_index).Name end)
             if (success) then
                 table.insert(itemwatch_session_items['drops'], 1, {
                     ['item'] = 'Gil',
@@ -810,24 +778,31 @@ ashita.register_event('incoming_text', function(mode, message, modifiedmode, mod
             steal_item = steal_item:gsub("(%l)(%w*)", function(a, b) return string.upper(a) .. b end) .. ' (stolen)'
 
             table.insert(itemwatch_session_items['mobs'], {
-                ['mob'] = steal_mob
+                ['mob'] = steal_mob,
+                ['timestamp'] = os.time(),
             });
             table.insert(itemwatch_session_items['drops'], 1, {
                 ['item'] = steal_item,
                 ['mob'] = steal_mob,
                 ['count'] = 1,
-                ['timestamp'] = os.time()
+                ['timestamp'] = os.time(),
             });
         elseif chest_item and chest then
             chest_item = string.sub(chest_item, 3, -3)
             chest_item = chest_item:gsub("(%l)(%w*)", function(a, b) return string.upper(a) .. b end)
-            table.insert(itemwatch_session_items['mobs'], {
-                ['mob'] = chest
-            });
+            if os.time() > itemwatch_chest_drop_delay then
+                table.insert(itemwatch_session_items['mobs'], {
+                    ['mob'] = chest,
+                    ['timestamp'] = os.time(),
+                });
+                itemwatch_chest_drop_delay = os.time() + 20
+            end
+            
         elseif mode == 36 or mode == 37 or mode == 44 or mode == 121 or string.contains(zone:lower(), 'dynamis') then
             if (kill_mob or fallen_mob) then
                 table.insert(itemwatch_session_items['mobs'], {
-                    ['mob'] = kill_mob or fallen_mob
+                    ['mob'] = kill_mob or fallen_mob,
+                    ['timestamp'] = os.time(),
                 });
             end
         end
@@ -1242,13 +1217,10 @@ function render_session_items_editor()
         -- Draw data rows
         for i, rowData in ipairs(itemwatch_session_items['item_grid_data']) do
             for j, cellData in ipairs(rowData) do
-                if j == 0 then
-                    imgui.PushItemWidth(200)
-                elseif j == #rowData then
+                if j == #rowData then
                     cellData = cellData .. '%%'
                 end
                 imgui.Text(cellData)
-                imgui.PopItemWidth()
                 imgui.NextColumn()
             end
             imgui.Separator()
@@ -1320,19 +1292,59 @@ function render_session_items_editor()
     imgui.Columns(1);
     imgui.EndChild();
 
-    show_help('Double Click to clear session data.');
-    imgui.SameLine();
-    if (imgui.Button('Clear Data ') and imgui.IsMouseDoubleClicked(0)) then
-        itemwatch_session_items = {};
+    --imgui.SameLine();
+    if (imgui.Button('Clear Data')) then
+        --if (imgui.IsMouseDoubleClicked(0)) then
+            itemwatch_session_items = {};
+            itemwatch_session_items['drops'] = {}
+            itemwatch_session_items['mobs']  = {}
+        --end
     end
 
     imgui.SameLine();
     if (imgui.Button('Export')) then
         export_session_data();
     end
-    
+
     imgui.SameLine();
     if (imgui.Button('Import')) then
-        import_session_data();
+          -- Get a list of files in the current directory
+        itemwatch_export_files = {}
+          for file in io.popen('dir ' .. _addon.path .. '/exports /b'):lines() do
+              table.insert(itemwatch_export_files, file)
+          end
+
+        imgui.SetVarValue(variables['var_ShowImportWindow'][1],
+            not imgui.GetVarValue(variables['var_ShowImportWindow'][1]));
+    end
+
+    if (imgui.GetVarValue(variables['var_ShowImportWindow'][1]) == false) then
+        return
+    else
+        -- Define the file path variable
+        local file_path = ''
+
+        -- Open the file dialog when the button is clicked
+        imgui.OpenPopup('Select File')
+
+        -- Create the file dialog
+        imgui.SetNextWindowSize(200, 200, 'ImGuiCond_FirstUseEver')
+        if imgui.BeginPopup('Select File', true) then
+            -- Display the list of files in a selectable list
+            imgui.BeginChild('Files', 0, 0, true)
+            for i, file in ipairs(itemwatch_export_files) do
+                if imgui.Selectable(file) then
+                    file_path = _addon.path .. '/exports/' ..file
+                    imgui.SetVarValue(variables['var_ShowImportWindow'][1],
+                        not imgui.GetVarValue(variables['var_ShowImportWindow'][1]));
+                    imgui.CloseCurrentPopup()
+                end
+            end
+            imgui.EndChild()
+            imgui.EndPopup()
+        end
+
+        -- Load and merge the itemwatch_session_items data..
+        itemwatch_session_items = ashita.settings.load_merged(file_path, itemwatch_session_items);
     end
 end
