@@ -16,8 +16,12 @@ An addon that allows players to easily track and monitor items and key items on-
     </tr>
   </thead>
   <tbody>
+  <tr>
+  <td colspan="2" style="border-right-style: hidden;"></td>
+      <td colspan="3" style="border-left-style: hidden;"><strong>Itemwatch Related Commands</strong></td>
+    </tr>
     <tr>
-      <td rowspan="14">/itemwatch</td>
+      <td rowspan="17">/itemwatch</td>
       <td>editor</td>
       <td></td>
       <td></td>
@@ -36,7 +40,8 @@ An addon that allows players to easily track and monitor items and key items on-
       <td>Save settings</td>
     </tr>    
     <tr>
-      <td colspan="4" style="text-align: center;"><strong>Item Related Commands</strong></td>
+      <td colspan="1"</td>
+      <td colspan="3" style="text-align: center;">Item Related Commands</td>
     </tr>
      <tr>
       <td>item</td>
@@ -61,6 +66,91 @@ An addon that allows players to easily track and monitor items and key items on-
       <td>clear</td>
       <td><i>&lt;item&gt;</i></td>
       <td>Clears list</td>
+    </tr>
+       <tr>
+         <td colspan="1"</td>
+      <td colspan="3" style="text-align: center;">Key Item Related Commands</td>
+    </tr>
+      <tr>
+      <td>key</td>
+      <td>find</td>
+      <td><i>&lt;key item&gt;</i></td>
+      <td>Search lists for <i>&lt;key item&gt;</i></td>
+    </tr>
+     <tr>
+      <td>key</td>
+      <td>add</td>
+      <td><i>&lt;key item&gt;</i></td>
+      <td>Adds <i>&lt;key item&gt;</i> to list</td>
+    </tr>
+     <tr>
+      <td>key</td>
+      <td>delete</td>
+      <td><i>&lt;key item&gt;</i></td>
+      <td>Deletes <i>&lt;key item&gt;</i> from list</td>
+    </tr>
+     <tr>
+      <td>key</td>
+      <td>clear</td>
+      <td><i>&lt;key item&gt;</i></td>
+      <td>Clears list</td>
+    </tr>
+       <tr>
+         <td colspan="1"</td>
+      <td colspan="3" style="text-align: center;">List Related Commands</td>
+    </tr>
+     <tr>
+      <td>list</td>
+      <td>load</td>
+      <td><i>&lt;list&gt;</i></td>
+      <td>Loads list</td>
+    </tr>
+     <tr>
+      <td>list</td>
+      <td>merge</td>
+      <td><i>&lt;list&gt;</i></td>
+      <td>Merge lists</td>
+    </tr>
+    <tr>
+      <td>list</td>
+      <td>clear</td>
+      <td><i>&lt;list&gt;</i></td>
+      <td>Clears lists</td>
+    </tr>
+     <tr>
+       <td colspan="2"</td>
+      <td colspan="3" style="text-align: center;"><strong>Dropwatch Related Commands</strong></td>
+    </tr>
+      <tr>
+      <td rowspan="5">/dw</td>
+      <td>clear</td>
+      <td></td>
+      <td></td>
+      <td>Clears Dropwatch data</td>
+    </tr>
+    <tr>
+      <td>mobs</td>
+      <td></td>
+      <td></td>
+      <td>Prints items dropped by mobs</td>
+    </tr>
+    <tr>
+      <td>items</td>
+      <td></td>
+      <td></td>
+      <td>Prints items totals</td>
+    </tr>
+     <tr>
+      <td>log</td>
+      <td></td>
+      <td></td>
+      <td>Prints raw log</td>
+    </tr>
+    <tr>
+      <td>export</td>
+      <td></td>
+      <td></td>
+      <td>Exports data</td>
     </tr>
   </tbody>
 </table>
