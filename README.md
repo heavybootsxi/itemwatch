@@ -7,7 +7,7 @@ An addon that allows players to easily track and monitor items and key items on-
 <table>
   <thead>
   <tr>
-      <td colspan="5"><center><strong>Itemwatch Related Commands</strong></center></td>
+      <th colspan="5">Itemwatch Related Commands</th>
     </tr>
     <tr>
       <th>Base Command</th>
@@ -89,7 +89,7 @@ An addon that allows players to easily track and monitor items and key items on-
     </tr>
        <thead>
   <tr>
-      <td colspan="5"><strong>Dropwatch Related Commands</strong></td>
+      <th colspan="5">Dropwatch Related Commands</th>
     </tr>
     <tr>
       <th>Base Command</th>
