@@ -36,7 +36,7 @@ An addon that allows players to easily track and monitor items and key items on-
       <td>Save settings</td>
     </tr>    
     <tr>
-      <td colspan="4" style="text-align: center;">Item Related Commands</td>
+      <td colspan="4" style="text-align: center;"><strong>Item Related Commands</strong></td>
     </tr>
      <tr>
       <td>item</td>
