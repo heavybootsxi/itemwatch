@@ -3,10 +3,12 @@
 
 An addon that allows players to easily track and monitor items and key items on-screen. Useful for things such as Abyssea farming where needing multiple key items gets tedious to track. Includes a full UI editor for ease of use.
 
-
 ##### Commands (wip)
 <table>
   <thead>
+  <tr>
+      <td colspan="5"><center><strong>Itemwatch Related Commands</strong></center></td>
+    </tr>
     <tr>
       <th>Base Command</th>
       <th>First Arg</th>
@@ -16,12 +18,8 @@ An addon that allows players to easily track and monitor items and key items on-
     </tr>
   </thead>
   <tbody>
-  <tr>
-  <td colspan="2" style="border-right-style: hidden;"></td>
-      <td colspan="3" style="border-left-style: hidden;"><strong>Itemwatch Related Commands</strong></td>
-    </tr>
     <tr>
-      <td rowspan="17">/itemwatch</td>
+      <td rowspan="14">/itemwatch</td>
       <td>editor</td>
       <td></td>
       <td></td>
@@ -39,88 +37,68 @@ An addon that allows players to easily track and monitor items and key items on-
       <td></td>
       <td>Save settings</td>
     </tr>    
-    <tr>
-      <td colspan="1"</td>
-      <td colspan="3" style="text-align: center;">Item Related Commands</td>
-    </tr>
      <tr>
-      <td>item</td>
+      <td rowspan="4">item</td>
       <td>find</td>
-      <td><i>&lt;item&gt;</i></td>
+      <td rowspan="4"><i>&lt;item&gt;</i></td>
       <td>Search lists for <i>&lt;item&gt;</i></td>
     </tr>
      <tr>
-      <td>item</td>
       <td>add</td>
-      <td><i>&lt;item&gt;</i></td>
       <td>Adds <i>&lt;item&gt;</i> to list</td>
     </tr>
      <tr>
-      <td>item</td>
       <td>delete</td>
-      <td><i>&lt;item&gt;</i></td>
       <td>Deletes <i>&lt;item&gt;</i> from list</td>
     </tr>
      <tr>
-      <td>item</td>
       <td>clear</td>
-      <td><i>&lt;item&gt;</i></td>
       <td>Clears list</td>
     </tr>
-       <tr>
-         <td colspan="1"</td>
-      <td colspan="3" style="text-align: center;">Key Item Related Commands</td>
-    </tr>
       <tr>
-      <td>key</td>
+      <td rowspan="4">key</td>
       <td>find</td>
-      <td><i>&lt;key item&gt;</i></td>
+      <td rowspan="4"><i>&lt;key item&gt;</i></td>
       <td>Search lists for <i>&lt;key item&gt;</i></td>
     </tr>
      <tr>
-      <td>key</td>
       <td>add</td>
-      <td><i>&lt;key item&gt;</i></td>
       <td>Adds <i>&lt;key item&gt;</i> to list</td>
     </tr>
      <tr>
-      <td>key</td>
       <td>delete</td>
-      <td><i>&lt;key item&gt;</i></td>
       <td>Deletes <i>&lt;key item&gt;</i> from list</td>
     </tr>
      <tr>
-      <td>key</td>
       <td>clear</td>
-      <td><i>&lt;key item&gt;</i></td>
       <td>Clears list</td>
     </tr>
-       <tr>
-         <td colspan="1"</td>
-      <td colspan="3" style="text-align: center;">List Related Commands</td>
-    </tr>
      <tr>
-      <td>list</td>
+      <td rowspan="3">list</td>
       <td>load</td>
-      <td><i>&lt;list&gt;</i></td>
-      <td>Loads list</td>
+      <td rowspan="3"><i>&lt;list&gt;</i></td>
+      <td>Loads <i>&lt;list&gt;</i></td>
     </tr>
      <tr>
-      <td>list</td>
       <td>merge</td>
-      <td><i>&lt;list&gt;</i></td>
-      <td>Merge lists</td>
+      <td>Merge <i>&lt;list&gt;</i></td>
     </tr>
     <tr>
-      <td>list</td>
       <td>clear</td>
-      <td><i>&lt;list&gt;</i></td>
-      <td>Clears lists</td>
+      <td>Clears <i>&lt;list&gt;</i></td>
     </tr>
-     <tr>
-       <td colspan="2"</td>
-      <td colspan="3" style="text-align: center;"><strong>Dropwatch Related Commands</strong></td>
+       <thead>
+  <tr>
+      <td colspan="5"><strong>Dropwatch Related Commands</strong></td>
     </tr>
+    <tr>
+      <th>Base Command</th>
+      <th>First Arg</th>
+      <th>Second Arg</th>
+      <th>Third Arg</th>
+      <th>Description</th>
+    </tr>
+  </thead>
       <tr>
       <td rowspan="5">/dw</td>
       <td>clear</td>
@@ -154,5 +132,11 @@ An addon that allows players to easily track and monitor items and key items on-
     </tr>
   </tbody>
 </table>
+
+<span>
+<img src="/pic/Screenshot%20from%202023-04-04%2022-55-58.png">
+</span>
+
+
 
   
