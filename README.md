@@ -1,6 +1,6 @@
 # Itemwatch
 
-#### Created by atom0s, dropwatcher added by heavyboots
+#### Created by [atom0s](https://github.com/atom0s), dropwatcher added by heavyboots
 
 An addon that allows players to easily track and monitor items and key items on-screen. Useful for things such as Abyssea farming where needing multiple key items gets tedious to track. Includes a full UI editor for ease of use.
 
