@@ -26,7 +26,7 @@
 
 _addon.author  = 'atom0s';
 _addon.name    = 'ItemWatch';
-_addon.version = '3.0.1hb'; -- dropwatch stuff by Heavyboots
+_addon.version = '3.0.1.1hb'; -- dropwatch stuff by Heavyboots
 
 require 'common'
 require 'imguidef'
