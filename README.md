@@ -134,7 +134,7 @@ An addon that allows players to easily track and monitor items and key items on-
 </table>
 
 <span>
-<img src="/pic/Screenshot%20from%202023-04-04%2022-55-58.png">
+<img src="/assets/images/dw_ui.png">
 </span>
 
 
