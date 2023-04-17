@@ -1310,7 +1310,6 @@ function render_session_items_editor()
         -- Get a list of files in the current directory
         itemwatch_export_files = {}
         for file in io.popen('dir "' .. _addon.path .. '/exports" /b'):lines() do
-            print(file)
             table.insert(itemwatch_export_files, file)
         end
 
